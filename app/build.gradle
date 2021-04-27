@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "30.0.2"
+    compileSdkVersion 22
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         applicationId "com.bshara.appointmentapp"
         minSdkVersion 22
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
