@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "963101631591",
-    "project_id": "appointmentapp-719c1",
-    "storage_bucket": "appointmentapp-719c1.appspot.com"
+    "project_number": "219312072879",
+    "project_id": "appointmentapp-7db45",
+    "storage_bucket": "appointmentapp-7db45.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:963101631591:android:d219608f5cd246bed3e0c2",
+        "mobilesdk_app_id": "1:219312072879:android:08cc65fec6a081660f4c5a",
         "android_client_info": {
           "package_name": "com.bshara.appointmentapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "963101631591-2var8pbf1v2ef5frd33oqu9ddh8t4joi.apps.googleusercontent.com",
+          "client_id": "219312072879-hcdi9qpep8p5mlh7744247svcj84tuao.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDUH9ANL5SILw-nGd4v-QqmTUwix_a4bzY"
+          "current_key": "AIzaSyA7-gMjjrhSDqXsP-LRpm4Fu69T3vjOddM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "963101631591-2var8pbf1v2ef5frd33oqu9ddh8t4joi.apps.googleusercontent.com",
+              "client_id": "219312072879-hcdi9qpep8p5mlh7744247svcj84tuao.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
