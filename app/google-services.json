@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "963101631591",
+    "project_id": "appointmentapp-719c1",
+    "storage_bucket": "appointmentapp-719c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963101631591:android:d219608f5cd246bed3e0c2",
+        "android_client_info": {
+          "package_name": "com.bshara.appointmentapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963101631591-2var8pbf1v2ef5frd33oqu9ddh8t4joi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUH9ANL5SILw-nGd4v-QqmTUwix_a4bzY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963101631591-2var8pbf1v2ef5frd33oqu9ddh8t4joi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
