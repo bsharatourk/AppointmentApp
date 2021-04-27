@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AppointmentApp</string>
+    <string name="didn_t_get_the_code_resend">Didn\'t Get The Code? <b>Resend!</b></string>
 </resources>
