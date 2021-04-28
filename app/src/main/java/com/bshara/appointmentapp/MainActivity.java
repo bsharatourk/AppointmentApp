@@ -18,7 +18,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 public class MainActivity extends AppCompatActivity {
 
-    //biewbinding
+    //viewbinding
     private ActivityMainBinding binding;
 
     //if code sent failed , it will resend OTP
