@@ -18,7 +18,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 public class MainActivity extends AppCompatActivity {
 
-    //viewbinding
+    //viewBinding
     private ActivityMainBinding binding;
 
     //if code sent failed , it will resend OTP
@@ -133,5 +133,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //new test comment
+    //private test comment
 
 }
