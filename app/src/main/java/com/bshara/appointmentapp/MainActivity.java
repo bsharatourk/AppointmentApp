@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         binding.phoneCntinueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = binding.phoneEt.getText().toString().trim();
+                String phone = "+972"+binding.phoneEt.getText().toString().trim();
                 if (TextUtils.isEmpty(phone)){
                     Toast.makeText(MainActivity.this,"Please Enter Phone Number...", Toast.LENGTH_SHORT).show();
                 }
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         binding.resendCodeTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = binding.phoneEt.getText().toString().trim();
+                String phone = "+972"+binding.phoneEt.getText().toString().trim();
                 if (TextUtils.isEmpty(phone)){
                     Toast.makeText(MainActivity.this,"Please Enter Phone Number ...", Toast.LENGTH_SHORT).show();
                 }
