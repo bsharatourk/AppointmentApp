@@ -134,6 +134,12 @@ public class Register extends AppCompatActivity {
                 //numTextView.setText("Please Type The Verification Code We Sent \nto " + findViewById(R.id.phoneNum).toString());
             }
         };
+        mLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),Login.class));
+            }
+        });
     }
     public void RegisterBtn(View view) {
         String fullName = mFullName.getText().toString().trim();
@@ -173,6 +179,7 @@ public class Register extends AppCompatActivity {
                 }
             }
         });
+
 
     }
     private void startPhoneNumberVerification(String phone){
