@@ -27,16 +27,21 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.TimeUnit;
 
 public class Register extends AppCompatActivity {
-    EditText mFullName,mPhone,mPassword;
+    EditText mFullName,mEmail,mPhone,mPassword;
     Button mRegisterBtn;
     TextView mLoginBtn, numTextView;
     FirebaseAuth fAuth;
     ProgressBar progressBar;
     EditText codeEt;
+
+    //DataBase Ref
+    DatabaseReference databaseUser;
 
     //Layouts
 
@@ -65,6 +70,9 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        //DataBase
+        databaseUser = FirebaseDatabase.getInstance().getReference("User");
+
         register = findViewById(R.id.RegLl);
         code = findViewById(R.id.CodeLl);
 
@@ -79,6 +87,7 @@ public class Register extends AppCompatActivity {
         pd.setTitle("Please Wait ...");
         pd.setCanceledOnTouchOutside(false);
 
+        mEmail = findViewById(R.id.emailText);
         mFullName = findViewById(R.id.fullName);
         mPhone = findViewById(R.id.phoneNum);
         mPassword = findViewById(R.id.pinCode);
@@ -142,15 +151,27 @@ public class Register extends AppCompatActivity {
         });
     }
     public void RegisterBtn(View view) {
-        String fullName = mFullName.getText().toString().trim();
+        String email = mEmail.getText().toString().trim();
         String password = mPassword.getText().toString().trim();
+        String fullName = mFullName.getText().toString().trim();
+        String phone = mPhone.getText().toString().trim();
+
 
         if(TextUtils.isEmpty(fullName)){
             mFullName.setError("Full Name Is Required.");
             return;
         }
-        if(fullName.length()<6 || fullName.contains("[0-9]+")==true ){
-            mPassword.setError("FullName Is Short Or Incorrect.");
+        if(fullName.length()<6 || fullName.contains("[0-9]+")){
+            mFullName.setError("FullName Is Short Or Incorrect.");
+            return;
+        }
+
+        if(TextUtils.isEmpty(email)){
+            mEmail.setError("Email Is Required.");
+            return;
+        }
+        if(email.length()<12 ){
+            mEmail.setError("Email Is Short Or Incorrect.");
             return;
         }
         if(TextUtils.isEmpty(password)){
@@ -161,24 +182,56 @@ public class Register extends AppCompatActivity {
             mPassword.setError("Password Must Be 7+ Characters.");
             return;
         }
+        if(TextUtils.isEmpty(phone)){
+            mPhone.setError("Phone Num Is Required.");
+            return;
+        }
+        if(phone.length()<9 ){
+            mPhone.setError("Phone Num Must Be 10 Numbers.");
+            return;
+        }
+
 
         progressBar.setVisibility(View.VISIBLE);
 
         //register user to fireBase
 
-        fAuth.createUserWithEmailAndPassword(fullName,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        fAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     startPhoneNumberVerification("+972"+mPhone.getText().toString());
+                    AddUser();
                     Toast.makeText(Register.this, "User Created, Inter the code", Toast.LENGTH_SHORT).show();
                     register.setVisibility(View.INVISIBLE);
                     code.setVisibility(View.VISIBLE);
                 }else{
                     Toast.makeText(Register.this,"Error !!"+ task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                 }
             }
         });
+
+
+    }
+    private void AddUser(){
+        String email = mEmail.getText().toString().trim();
+        String password = mPassword.getText().toString().trim();
+        String fullName = mFullName.getText().toString().trim();
+        String phone = mPhone.getText().toString().trim();
+
+        if(!TextUtils.isEmpty(fullName)){
+            String id = databaseUser.push().getKey();
+
+            User user = new User(id,fullName,email,phone,password);
+
+            databaseUser.child(id).setValue(user);
+
+            Toast.makeText(this,"User Added ",Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this,"You Should Enter A Name",Toast.LENGTH_SHORT).show();
+        }
+
 
 
     }
