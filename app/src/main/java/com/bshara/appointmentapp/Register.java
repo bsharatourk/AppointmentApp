@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bshara.appointmentapp.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,19 +36,22 @@ public class Register extends AppCompatActivity {
     TextView mLoginBtn, numTextView;
     FirebaseAuth fAuth;
     ProgressBar progressBar;
+    EditText codeEt;
+
+    //Layouts
+
+    LinearLayout register;
+    LinearLayout code;
 
     //Added
 
-
-    //viewbinding
-    private ActivityMainBinding binding;
 
     //if code sent failed , it will resend OTP
     private PhoneAuthProvider.ForceResendingToken forceResendingToken;
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
-    private String mVerificatiodId;
+    private String mVerificationId;
 
     private static  final String TAG = "MAIN_TAG";
 
@@ -62,6 +65,13 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        register = findViewById(R.id.RegLl);
+        code = findViewById(R.id.CodeLl);
+
+        register.setVisibility(View.VISIBLE);
+        code.setVisibility(View.INVISIBLE);
+
+        codeEt = findViewById(R.id.codeEt);
         firebaseAuth = FirebaseAuth.getInstance();
 
         //init progress dialog
@@ -115,7 +125,7 @@ public class Register extends AppCompatActivity {
                  */
                 Log.d(TAG, "onCodeSent "+ verificationId);
 
-                mVerificatiodId = verificationId;
+                mVerificationId = verificationId;
                 forceResendingToken = token;
                 pd.dismiss();
 
@@ -156,7 +166,8 @@ public class Register extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     startPhoneNumberVerification("+972"+mPhone.getText().toString());
                     Toast.makeText(Register.this, "User Created, Inter the code", Toast.LENGTH_SHORT).show();
-                    //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    register.setVisibility(View.INVISIBLE);
+                    code.setVisibility(View.VISIBLE);
                 }else{
                     Toast.makeText(Register.this,"Error !!"+ task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                 }
@@ -203,5 +214,45 @@ public class Register extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    private void resendVerification(String phone , PhoneAuthProvider.ForceResendingToken token){
+        pd.setMessage("Resending Code");
+        pd.show();
+
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(firebaseAuth)
+                        .setPhoneNumber(phone) //Phone number must be with coutry code for example israel +972
+                        .setTimeout(60L , TimeUnit.SECONDS) // the timeout and unit
+                        .setActivity(this) // activity (for the callback binding )
+                        .setCallbacks(mCallbacks) // OnVerificationStateChangedCallBacks
+                        .setForceResendingToken(token)
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+
+    }
+
+    private void verifyPhoneNumberWithCode(String verificationId, String code) {
+        pd.setMessage("Verifing Code");
+        pd.show();
+
+        PhoneAuthCredential credential = PhoneAuthProvider
+                .getCredential(verificationId,code);
+        signInWithPhoneAuthCredntial(credential);
+    }
+
+    public void ResendBtn(View view) {
+        String phone = "+972"+findViewById(R.id.phoneNum).toString();
+        resendVerification(phone , forceResendingToken);
+    }
+
+    public void SubmitBtn(View view) {
+        String code = codeEt.getText().toString();
+        if (TextUtils.isEmpty(code)){
+            Toast.makeText(this,"Please Enter Verification Code ...",Toast.LENGTH_SHORT).show();
+        }
+        else{
+            verifyPhoneNumberWithCode(mVerificationId,code);
+        }
     }
 }
