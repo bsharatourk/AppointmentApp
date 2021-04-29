@@ -1,7 +1,5 @@
 package com.bshara.appointmentapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -9,12 +7,20 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bshara.appointmentapp.databinding.ActivityMainBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseApp;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +30,15 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class Register extends AppCompatActivity {
+    EditText mFullName,mPhone,mPassword;
+    Button mRegisterBtn;
+    TextView mLoginBtn, numTextView;
+    FirebaseAuth fAuth;
+    ProgressBar progressBar;
+
+    //Added
+
 
     //viewbinding
     private ActivityMainBinding binding;
@@ -43,12 +57,10 @@ public class MainActivity extends AppCompatActivity {
     //progress dialog
     private ProgressDialog pd;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_register);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -56,6 +68,21 @@ public class MainActivity extends AppCompatActivity {
         pd = new ProgressDialog( this);
         pd.setTitle("Please Wait ...");
         pd.setCanceledOnTouchOutside(false);
+
+        mFullName = findViewById(R.id.fullName);
+        mPhone = findViewById(R.id.phoneNum);
+        mPassword = findViewById(R.id.pinCode);
+        mRegisterBtn = findViewById(R.id.registerBtn);
+        mLoginBtn = findViewById(R.id.Aregister);
+        numTextView = findViewById(R.id.codeSentDescription);
+
+        fAuth = FirebaseAuth.getInstance();
+        progressBar = findViewById(R.id.progressBar);
+
+       /* if(fAuth.getCurrentUser() !=null){
+            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            finish();
+        }*/
 
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
             @Override
@@ -75,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 for instance if the phone num format isnt valid
              */
                 pd.dismiss();
-                Toast.makeText(MainActivity.this , ""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(Register.this , ""+e.getMessage(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -92,51 +119,53 @@ public class MainActivity extends AppCompatActivity {
                 forceResendingToken = token;
                 pd.dismiss();
 
-                Toast.makeText(MainActivity.this, "Verification Code Sent", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Register.this, "Verification Code Sent", Toast.LENGTH_SHORT).show();
 
-                binding.codeSentDescription.setText("Please Type The Verification Code We Sent \nto " + findViewById(R.id.phoneNum).toString());
+                //numTextView.setText("Please Type The Verification Code We Sent \nto " + findViewById(R.id.phoneNum).toString());
             }
         };
-
-        binding.resendCodeTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String phone = "+972"+findViewById(R.id.phoneNum).toString();
-                    resendVerification(phone , forceResendingToken);
-            }
-        });
-        binding.codeSubmitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String code = binding.codeEt.getText().toString().trim();
-                if (TextUtils.isEmpty(code)){
-                    Toast.makeText(MainActivity.this,"Please Enter Verification Code ...",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    verifyPhoneNumberWithCode(mVerificatiodId,code);
-                }
-            }
-        });
-        //comment
-        //jerry Comment
     }
+    public void RegisterBtn(View view) {
+        String fullName = mFullName.getText().toString().trim();
+        String password = mPassword.getText().toString().trim();
 
+        if(TextUtils.isEmpty(fullName)){
+            mFullName.setError("Full Name Is Required.");
+            return;
+        }
+        if(fullName.length()<6 || fullName.contains("[0-9]+")==true ){
+            mPassword.setError("FullName Is Short Or Incorrect.");
+            return;
+        }
+        if(TextUtils.isEmpty(password)){
+            mPassword.setError("Password Is Required.");
+            return;
+        }
+        if(password.length()<7 ){
+            mPassword.setError("Password Must Be 7+ Characters.");
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        //register user to fireBase
+
+        fAuth.createUserWithEmailAndPassword(fullName,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    startPhoneNumberVerification("+972"+mPhone.getText().toString());
+                    Toast.makeText(Register.this, "User Created, Inter the code", Toast.LENGTH_SHORT).show();
+                    //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                }else{
+                    Toast.makeText(Register.this,"Error !!"+ task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
     private void startPhoneNumberVerification(String phone){
         pd.setMessage("Verifying Phone Number");
-        pd.show();
-
-        PhoneAuthOptions options =
-                PhoneAuthOptions.newBuilder(firebaseAuth)
-                .setPhoneNumber(phone) //Phone number must be with coutry code for example israel +972
-                .setTimeout(60L , TimeUnit.SECONDS) // the timeout and unit
-                .setActivity(this) // activity (for the callback binding )
-                .setCallbacks(mCallbacks) // OnVerificationStateChangedCallBacks
-                .build();
-        PhoneAuthProvider.verifyPhoneNumber(options);
-    }
-
-    private void resendVerification(String phone , PhoneAuthProvider.ForceResendingToken token){
-        pd.setMessage("Resending Code");
         pd.show();
 
         PhoneAuthOptions options =
@@ -145,19 +174,8 @@ public class MainActivity extends AppCompatActivity {
                         .setTimeout(60L , TimeUnit.SECONDS) // the timeout and unit
                         .setActivity(this) // activity (for the callback binding )
                         .setCallbacks(mCallbacks) // OnVerificationStateChangedCallBacks
-                        .setForceResendingToken(token)
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
-
-    }
-
-    private void verifyPhoneNumberWithCode(String verificatiodId, String code) {
-        pd.setMessage("Verifing Code");
-        pd.show();
-
-        PhoneAuthCredential credential = PhoneAuthProvider
-                .getCredential(verificatiodId,code);
-        signInWithPhoneAuthCredntial(credential);
     }
 
     private void signInWithPhoneAuthCredntial(PhoneAuthCredential credential) {
@@ -170,10 +188,10 @@ public class MainActivity extends AppCompatActivity {
                         //Successfully signed in
                         pd.dismiss();
                         String phone = firebaseAuth.getCurrentUser().getPhoneNumber();
-                        Toast.makeText(MainActivity.this , "Logged In as"+ phone, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Register.this , "Logged In as"+ phone, Toast.LENGTH_SHORT).show();
 
                         //start profile activity
-                        startActivity(new Intent(MainActivity.this , ProfileActivity.class));
+                        startActivity(new Intent(Register.this , ProfileActivity.class));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -181,12 +199,9 @@ public class MainActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         //faile Sign in
                         pd.dismiss();
-                        Toast.makeText(MainActivity.this , "Logged In as"+e.getMessage() , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Register.this , "Logged In as"+e.getMessage() , Toast.LENGTH_SHORT).show();
 
                     }
                 });
     }
-
-    //new master comment
-
 }

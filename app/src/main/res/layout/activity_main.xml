@@ -18,49 +18,7 @@
         android:src="@drawable/ic_baseline_phone_android_24"/>
 
     <!---For Phone Number Input-->
-    <LinearLayout
-        android:id="@+id/phoneLl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-        <TextView
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Phone Number"
-            android:textAlignment="center"
-            android:textColor="#000"/>
-        <TextView
-            style="@style/TextAppearance.MaterialComponents.Caption"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Please Enter Your Phone Number To Continue"
-            android:textAlignment="center"
-            android:textColor="#777777"/>
-        <EditText
-            android:id="@+id/phoneEt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#fff"
-            android:hint="05x-xxx-xxxx"
-            android:inputType="phone"
-            android:padding="10dp"
-            android:textAlignment="center"
-            android:textColor="#000"
-            android:textColorHint="#c5c5c5"/>
-
-        <Button
-            android:id="@+id/phoneCntinueBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:text="Continue"/>
-
-    </LinearLayout>
 
     <!--For OTP / Verification Code -->
 

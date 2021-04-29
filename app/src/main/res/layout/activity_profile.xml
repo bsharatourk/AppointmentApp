@@ -5,29 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:background="@color/colorBackground"
-    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
     tools:context=".ProfileActivity">
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_navigation">
+    <TextView
+        android:text="Hello Guys"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="300dp"
+        android:textColor="#000"
+        android:layout_width="wrap_content"
+        android:textSize="45sp"
+        android:layout_height="wrap_content">
 
-    </FrameLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBackground"
-        app:itemIconTint="@android:color/white"
-        app:itemTextColor="@android:color/white"
-        app:menu="@menu/home_menu">
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+    </TextView>
 
 </LinearLayout>
