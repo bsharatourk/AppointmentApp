@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.bshara.appointmentapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,9 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppointmentApp"
         android:usesCleartextTraffic="true">
+        <activity android:name=".HomeScreen"></activity>
+        <activity
+            android:name=".AdminCustomersList"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".ProfileActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />

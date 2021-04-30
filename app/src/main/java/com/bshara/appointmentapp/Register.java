@@ -1,10 +1,10 @@
 package com.bshara.appointmentapp;
 
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,8 +29,12 @@ import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.concurrent.TimeUnit;
+
 
 public class Register extends AppCompatActivity {
     EditText mFullName,mEmail,mPhone,mPassword;
@@ -42,6 +46,7 @@ public class Register extends AppCompatActivity {
 
     //DataBase Ref
     DatabaseReference databaseUser;
+    private FirebaseFirestore db;
 
     //Layouts
 
@@ -72,6 +77,8 @@ public class Register extends AppCompatActivity {
 
         //DataBase
         databaseUser = FirebaseDatabase.getInstance().getReference("User");
+        db = FirebaseFirestore.getInstance();
+
 
         register = findViewById(R.id.RegLl);
         code = findViewById(R.id.CodeLl);
@@ -146,9 +153,10 @@ public class Register extends AppCompatActivity {
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),Login.class));
+                startActivity(new Intent(Register.this,Login.class));
             }
         });
+        mLoginBtn.setMovementMethod(LinkMovementMethod.getInstance());
     }
     public void RegisterBtn(View view) {
         String email = mEmail.getText().toString().trim();
@@ -215,15 +223,31 @@ public class Register extends AppCompatActivity {
 
     }
     private void AddUser(){
+        CollectionReference ref = db.collection("Client");
+
         String email = mEmail.getText().toString().trim();
         String password = mPassword.getText().toString().trim();
         String fullName = mFullName.getText().toString().trim();
         String phone = mPhone.getText().toString().trim();
 
         if(!TextUtils.isEmpty(fullName)){
-            String id = databaseUser.push().getKey();
+            String id = phone;
 
-            User user = new User(id,fullName,email,phone,password);
+            User user = new User(fullName,email,phone,password);
+
+            ref.add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Toast.makeText(Register.this,"The Client Is Added.",Toast.LENGTH_LONG).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(Register.this,e.getMessage(),Toast.LENGTH_LONG).show();
+
+                }
+            });
+
 
             databaseUser.child(id).setValue(user);
 

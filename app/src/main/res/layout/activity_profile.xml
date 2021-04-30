@@ -8,7 +8,7 @@
     tools:context=".ProfileActivity">
 
     <TextView
-        android:text="Hello Guys"
+        android:text="Hello Owner"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="300dp"
         android:textColor="#000"
@@ -18,7 +18,7 @@
     </TextView>
 
     <Button
-        android:id="@+id/logoutBtn"
+        android:id="@+id/logoutButn"
         android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_height="50dp"
@@ -26,7 +26,6 @@
         android:radius="30dp"
         android:text="Logout"
         android:textSize="24sp"
-        android:layout_marginTop="35dp"
-        android:onClick="LogoutBtn"/>
+        android:layout_marginTop="35dp" />
 
 </LinearLayout>

@@ -5,9 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    android:background="#f7f7f7"
+    android:background="@drawable/barber_background"
     tools:context=".MainActivity">
-
 
 
 </LinearLayout>
