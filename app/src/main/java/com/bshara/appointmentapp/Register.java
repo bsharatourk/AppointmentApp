@@ -150,13 +150,8 @@ public class Register extends AppCompatActivity {
                 //numTextView.setText("Please Type The Verification Code We Sent \nto " + findViewById(R.id.phoneNum).toString());
             }
         };
-        mLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Register.this,Login.class));
-            }
-        });
-        mLoginBtn.setMovementMethod(LinkMovementMethod.getInstance());
+
+        //mLoginBtn.setMovementMethod(LinkMovementMethod.getInstance());
     }
     public void RegisterBtn(View view) {
         String email = mEmail.getText().toString().trim();
@@ -338,5 +333,9 @@ public class Register extends AppCompatActivity {
         else{
             verifyPhoneNumberWithCode(mVerificationId,code);
         }
+    }
+
+    public void LoginActivity(View view) {
+        startActivity(new Intent(Register.this,Login.class));
     }
 }

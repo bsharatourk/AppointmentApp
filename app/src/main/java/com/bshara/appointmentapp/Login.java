@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuth.AuthStateListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,14 +33,23 @@ public class Login extends AppCompatActivity {
     TextView mCreateBtn;
     ProgressBar progressBar;
     FirebaseAuth fAuth;
-    FirebaseAuth.AuthStateListener mAuthl;
+    AuthStateListener mAuthl;
     ProgressDialog loginProgress;
     DatabaseReference mDataBase;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+       // fAuth.addAuthStateListener(mAuthl);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Log.e("OnCreate", "i am here");
 
         mEmail = findViewById(R.id.emailBar);
         mPassword = findViewById(R.id.pinCode);
@@ -46,41 +57,23 @@ public class Login extends AppCompatActivity {
         mCreateBtn = findViewById(R.id.createBtn);
         mDataBase = FirebaseDatabase.getInstance().getReference().child("User");
         fAuth = FirebaseAuth.getInstance();
-        mAuthl = new FirebaseAuth.AuthStateListener() {
+
+        mAuthl = new AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                startActivity(new Intent(Login.this , ProfileActivity.class));
+                Log.e("Profile intent", "got here now");
+               // startActivity(new Intent(Login.this , ProfileActivity.class));
             }
         };
 
-        progressBar = findViewById(R.id.progressBar);
-
-        mLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkLogin();
-            }
-        });
-
-        mCreateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),Register.class));
-            }
-        });
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         fAuth.addAuthStateListener(mAuthl);
+        progressBar = findViewById(R.id.progressBar);
 
     }
 
     private void checkLogin(){
-        String email=mEmail.getText().toString().trim();
-        String pass=mPassword.getText().toString().trim();
+        String email=mEmail.getText().toString();
+        String pass=mPassword.getText().toString();
 
         if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(pass)){
             loginProgress.setMessage("Check Login....");
@@ -107,6 +100,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
                 if (dataSnapShot.hasChild(userId)){
+                    Log.e("intent", "i am here");
                     Intent loginintent = new Intent(Login.this, ProfileActivity.class);
                     startActivity(loginintent);
                 }
@@ -123,4 +117,11 @@ public class Login extends AppCompatActivity {
 
     }
 
+    public void LoginBtn(View view) {
+        checkLogin();
+    }
+
+    public void RegisterActivity(View view) {
+        startActivity(new Intent(getApplicationContext(),Register.class));
+    }
 }
