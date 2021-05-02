@@ -55,6 +55,7 @@
         android:text="Login"
         android:textSize="24sp"
         android:textAlignment="center"
+        android:onClick="LoginBtn"
         android:layout_marginTop="125dp"/>
 
     <TextView
@@ -66,6 +67,7 @@
         android:text="Don't Have An account ? Registered Here!!"
         android:textColor="#FFFFFF"
         android:textSize="18dp"
+        android:onClick="RegisterActivity"
         android:layout_marginTop="15dp"/>
 
     <ProgressBar

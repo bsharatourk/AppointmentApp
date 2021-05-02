@@ -28,7 +28,6 @@ public class User {
         return userId;
     }
 
-
     public String getPhoneNum() {
         return phoneNum;
     }

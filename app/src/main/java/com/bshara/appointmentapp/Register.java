@@ -91,8 +91,6 @@ public class Register extends AppCompatActivity {
         mFullName = findViewById(R.id.fullName);
         mPhone = findViewById(R.id.phoneNum);
         mPassword = findViewById(R.id.pinCode);
-        mRegisterBtn = findViewById(R.id.registerBtn);
-        mLoginBtn = findViewById(R.id.Aregister);
         numTextView = findViewById(R.id.codeSentDescription);
 
         fAuth = FirebaseAuth.getInstance();
@@ -143,12 +141,7 @@ public class Register extends AppCompatActivity {
                 //numTextView.setText("Please Type The Verification Code We Sent \nto " + findViewById(R.id.phoneNum).toString());
             }
         };
-        mLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),Login.class));
-            }
-        });
+
     }
     public void RegisterBtn(View view) {
         String email = mEmail.getText().toString().trim();
@@ -314,5 +307,9 @@ public class Register extends AppCompatActivity {
         else{
             verifyPhoneNumberWithCode(mVerificationId,code);
         }
+    }
+
+    public void LogInActivity(View view) {
+        startActivity(new Intent(getApplicationContext(),Login.class));
     }
 }
