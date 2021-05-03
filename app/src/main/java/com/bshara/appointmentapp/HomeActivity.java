@@ -108,10 +108,13 @@ public class HomeActivity extends AppCompatActivity {
         bottomSheetDialog.setCancelable(false);
         View sheetView = getLayoutInflater().inflate(R.layout.layout_update_information,null);
 
-        Button btn_update = (Button)sheetView.findViewById(R.id.btn_update);
-        final TextInputEditText edt_name = (TextInputEditText)sheetView.findViewById(R.id.edit_name);
-        final TextInputEditText edt_phone = (TextInputEditText)sheetView.findViewById(R.id.edit_Phone_number);
+        Button btn_update = (Button)sheetView.findViewById(R.id.btn_approve);
 
+        //
+        final TextInputEditText edt_name = (TextInputEditText)sheetView.findViewById(R.id.edit_name);
+        final TextInputEditText edt_email = (TextInputEditText)sheetView.findViewById(R.id.edit_email);
+        edt_email.setText(email);
+        edt_name.setText(fullname);
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +124,7 @@ public class HomeActivity extends AppCompatActivity {
                     dialog.show();
                 }
 
-                final User user = new User(edt_name.getText().toString(),edt_phone.getText().toString());
+                final User user = new User(edt_name.getText().toString(),edt_email.getText().toString(),phoneNumber);
                 userRef.document(phoneNumber).set(user)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

@@ -25,8 +25,8 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_Phone_number"
-            android:hint="Phone Number"
+            android:id="@+id/edit_email"
+            android:hint="Email"
             android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -34,8 +34,8 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btn_update"
-        android:text="Update"
+        android:id="@+id/btn_approve"
+        android:text="Approve"
         android:background="@color/colorBackground"
         android:textColor="@android:color/white"
         android:fontFamily="@font/abril_fatface"
