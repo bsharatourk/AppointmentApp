@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -218,17 +217,17 @@ public class Register extends AppCompatActivity {
 
     }
     private void AddUser(){
-        CollectionReference ref = db.collection("Client");
 
-        String email = mEmail.getText().toString().trim();
-        String password = mPassword.getText().toString().trim();
+
         String fullName = mFullName.getText().toString().trim();
         String phone = mPhone.getText().toString().trim();
 
+        //FireStore
+        CollectionReference ref = db.collection("Client");
         if(!TextUtils.isEmpty(fullName)){
             String id = phone;
 
-            User user = new User(fullName,email,phone,password);
+            User user = new User(fullName,phone);
 
             ref.add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
@@ -242,7 +241,6 @@ public class Register extends AppCompatActivity {
 
                 }
             });
-
 
             databaseUser.child(id).setValue(user);
 

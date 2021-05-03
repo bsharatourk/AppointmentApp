@@ -4,8 +4,8 @@
         android:icon="@drawable/ic_home_home_24dp"
         android:title="Home"/>
 
-    <item android:id="@+id/action_loginAdmin"
-        android:icon="@drawable/ic_login_login_24dp"
-        android:title="Admin Login"/>
+    <item android:id="@+id/action_shopping"
+        android:icon="@drawable/ic_baseline_shopping_cart_24"
+        android:title="Shopping"/>
 
 </menu>
