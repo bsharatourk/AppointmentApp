@@ -59,4 +59,12 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
 
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+
+    implementation 'com.google.firebase:firebase-firestore:22.1.2'
+    // Import the BoM for the Firebase platform
+
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-auth'
+
 }

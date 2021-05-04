@@ -55,6 +55,8 @@ public class Register extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
 
     }
+
+
     private void AddUser(){
 
 
